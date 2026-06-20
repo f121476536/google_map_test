@@ -19,8 +19,52 @@
 
             <h2>門市據點查詢</h2>
 
-            <input id="searchBox" placeholder="輸入門市名稱 / 地址" />
+            <input 
+            id="searchBox" 
+            placeholder="搜尋門市 / 地址"
+            />
 
+            <button id="filterToggle" class="filter-btn">
+            篩選條件
+            </button>
+
+
+            <div id="filterPanel" class="filter-panel">
+
+            <select id="regionFilter">
+                <option value="">全部地區</option>
+                <option value="台北">台北</option>
+                <option value="新北">新北</option>
+                <option value="桃園">桃園</option>
+                <option value="新竹">新竹</option>
+                <option value="台中">台中</option>
+                <option value="嘉義">嘉義</option>
+                <option value="台南">台南</option>
+                <option value="高雄">高雄</option>
+            </select>
+
+
+            <label class="filter-check">
+                <input 
+                type="checkbox" 
+                id="electricBedFilter"
+                >
+                電動床陳列櫃點
+            </label>
+
+
+            <label class="filter-check">
+                <input 
+                type="checkbox" 
+                id="pressureBedFilter"
+                >
+                防褥瘡床墊陳列櫃點
+            </label>
+
+            </div>
+
+            <div id="resultCount" style="font-size:13px;color:#666;margin-bottom:10px;"></div>
+            <div id="filterChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
             <div id="storeList"></div>
 
         </div>
@@ -28,7 +72,7 @@
         <div id="map"></div>
 
     </div>
-    
+
     <script src="stores.js"></script>
 
     <script src="app.js"></script>
