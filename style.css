@@ -1,71 +1,98 @@
 body {
   margin: 0;
   font-family: Arial, "Noto Sans TC", sans-serif;
+  background: #f6f7f9;
 }
 
+/* 左右結構 */
 .layout {
   display: flex;
   height: 100vh;
 }
 
+/* 左側欄 */
 .sidebar {
-  width: 320px;
-  padding: 12px;
+  width: 360px;
+  padding: 16px;
   overflow-y: auto;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #e6e6e6;
   box-sizing: border-box;
+  background: #fff;
 }
 
-#map {
-  flex: 1;
-}
-
+/* 搜尋框 */
 input {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 10px 12px;
+  margin: 10px 0 16px;
   box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
 }
 
+/* 卡片 */
+.store {
+  padding: 14px 14px 12px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  background: #fff;
+  transition: 0.15s ease;
+}
+
+.store:hover {
+  background: #fafafa;
+  border-color: #ddd;
+}
+
+/* 門市名稱 */
 .store-name {
-  font-weight: 600;
-  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.4;
+  margin-bottom: 6px;
+  color: #222;
 }
 
+/* 地址區塊 */
 .store-meta {
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
-  margin-top: 2px;
+  line-height: 1.5;
+  margin-bottom: 8px;
 }
 
+/* 內容區 */
+.store-body {
+  font-size: 13px;
+  color: #444;
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+/* 更多資訊 */
 .store-more {
-  margin-top: 8px;
-  font-size: 14px;
+  margin-top: 10px;
+  font-size: 13px;
   color: #555;
 }
 
 .store-more summary {
   cursor: pointer;
   color: #888;
+  font-size: 12px;
+  margin-bottom: 6px;
 }
 
-.store-info {
-  font-size: 13px;
-  color: #444;
-  line-height: 1.5;
+/* 小型資訊行 */
+.store-body div,
+.store-more div {
+  margin-top: 4px;
 }
 
-.store {
-  padding: 12px;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  background: #fff;
-}
-
-.store:hover {
-  background: #f7f7f7;
+/* 地圖 */
+#map {
+  flex: 1;
 }
