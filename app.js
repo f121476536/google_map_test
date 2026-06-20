@@ -64,12 +64,16 @@ function renderStores(list) {
     div.innerHTML = `
         <div class="store-name">${store.name}</div>
 
-        <div class="store-info">
-            <div class="row">📍 ${store.address}</div>
-            <div class="row">📞 ${store.phone || "-"}</div>
-            <div class="row">🕒 ${store.hours || "-"}</div>
-            <div class="row">ℹ️ ${store.note || "-"}</div>
+        <div class="store-meta">
+          <div> ${store.address}</div>
         </div>
+
+        <details class="store-more">
+            <summary>更多資訊</summary>
+            <div>📞 ${store.phone || "-"}</div>
+            <div>🕒 ${store.hours || "-"}</div>
+            <div>ℹ️ ${store.note || "-"}</div>
+        </details>
     `;
 
     div.onclick = () => {

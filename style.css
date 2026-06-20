@@ -31,7 +31,24 @@ input {
 
 .store-name {
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: 15px;
+}
+
+.store-meta {
+  font-size: 14px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.store-more {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+.store-more summary {
+  cursor: pointer;
+  color: #888;
 }
 
 .store-info {
@@ -43,10 +60,10 @@ input {
 .store {
   padding: 12px;
   border: 1px solid #eee;
+  border-radius: 10px;
   margin-bottom: 10px;
-  border-radius: 8px;
   cursor: pointer;
-  background: white;
+  background: #fff;
 }
 
 .store:hover {
