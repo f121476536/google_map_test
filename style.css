@@ -29,14 +29,26 @@ input {
   border-radius: 6px;
 }
 
+.store-name {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.store-info {
+  font-size: 13px;
+  color: #444;
+  line-height: 1.5;
+}
+
 .store {
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #eee;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  border-radius: 6px;
+  background: white;
 }
 
 .store:hover {
-  background: #f5f5f5;
+  background: #f7f7f7;
 }

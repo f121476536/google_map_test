@@ -62,8 +62,14 @@ function renderStores(list) {
     div.className = "store";
 
     div.innerHTML = `
-      <b>${store.name}</b><br>
-      ${store.address}
+        <div class="store-name">${store.name}</div>
+
+        <div class="store-info">
+            <div class="row">📍 ${store.address}</div>
+            <div class="row">📞 ${store.phone || "-"}</div>
+            <div class="row">🕒 ${store.hours || "-"}</div>
+            <div class="row">ℹ️ ${store.note || "-"}</div>
+        </div>
     `;
 
     div.onclick = () => {
