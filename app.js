@@ -1,6 +1,10 @@
 let map;
 let markers = [];
+let markerMap = {};
 let userMarker;
+
+let currentList = [];
+let activeStoreName = null;
 
 function initMap() {
 
@@ -9,22 +13,22 @@ function initMap() {
     zoom: 7
   });
 
-  renderAllStores();
+  currentList = stores;
+
+  renderStores(currentList);
+  renderMarkers(currentList);
 
   getUserLocation();
 }
 
-// 顯示全部門市
-function renderAllStores() {
-  renderStores(stores);
-  renderMarkers(stores);
-}
-
-// marker
+/* -------------------------
+   MARKERS
+-------------------------- */
 function renderMarkers(list) {
 
   markers.forEach(m => m.setMap(null));
   markers = [];
+  markerMap = {};
 
   list.forEach(store => {
 
@@ -47,10 +51,13 @@ function renderMarkers(list) {
     });
 
     markers.push(marker);
+    markerMap[store.name] = marker;
   });
 }
 
-// list
+/* -------------------------
+   STORE LIST (ONE TIME RENDER)
+-------------------------- */
 function renderStores(list) {
 
   const container = document.getElementById("storeList");
@@ -59,49 +66,104 @@ function renderStores(list) {
   list.forEach(store => {
 
     const div = document.createElement("div");
+
     div.className = "store";
+    div.dataset.name = store.name;
 
     div.innerHTML = `
-        <div class="store-name">${store.name}</div>
+      <div class="store-name">${store.name}</div>
 
-        <div class="store-meta">
-          <div> ${store.address}</div>
+      <div class="store-meta">
+        <div>${store.address}</div>
+      </div>
+
+      <details class="store-more">
+        <summary>更多資訊</summary>
+        <div>📞 ${store.phone || "-"}</div>
+        <div>🕒 ${store.hours || "-"}</div>
+        <div>ℹ️ ${store.note || "-"}</div>
+        <div>
+            <a 
+                href="https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                🚗 如何前往
+            </a>
         </div>
-
-        <details class="store-more">
-            <summary>更多資訊</summary>
-            <div>📞 ${store.phone || "-"}</div>
-            <div>🕒 ${store.hours || "-"}</div>
-            <div>ℹ️ ${store.note || "-"}</div>
-        </details>
+      </details>
     `;
 
-    div.onclick = () => {
+    /* click：只改 state，不重畫 DOM */
+    div.addEventListener("click", (e) => {
+
+      e.stopPropagation();
+
+      activeStoreName = store.name;
+
       map.setCenter({ lat: store.lat, lng: store.lng });
       map.setZoom(15);
-    };
+
+      updateActiveState();
+    });
+
+    /* hover：marker feedback */
+    div.addEventListener("mouseenter", () => {
+
+      const marker = markerMap[store.name];
+      if (!marker) return;
+
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+
+      setTimeout(() => {
+        marker.setAnimation(null);
+      }, 700);
+
+      map.panTo(marker.getPosition());
+    });
 
     container.appendChild(div);
   });
+
+  updateActiveState();
 }
 
-// 搜尋
+/* -------------------------
+   ACTIVE STATE ONLY
+-------------------------- */
+function updateActiveState() {
+
+  document.querySelectorAll(".store").forEach(el => {
+
+    if (el.dataset.name === activeStoreName) {
+      el.classList.add("active");
+    } else {
+      el.classList.remove("active");
+    }
+  });
+}
+
+/* -------------------------
+   SEARCH (FILTER STATE ONLY)
+-------------------------- */
 document.addEventListener("input", (e) => {
 
   if (e.target.id !== "searchBox") return;
 
   const keyword = e.target.value.toLowerCase();
 
-  const filtered = stores.filter(s =>
+  currentList = stores.filter(s =>
     s.name.toLowerCase().includes(keyword) ||
     s.address.toLowerCase().includes(keyword)
   );
 
-  renderStores(filtered);
-  renderMarkers(filtered);
+  renderStores(currentList);
+  renderMarkers(currentList);
 });
 
-// 目前位置
+/* -------------------------
+   GEOLOCATION
+-------------------------- */
 function getUserLocation() {
 
   if (!navigator.geolocation) return;

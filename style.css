@@ -4,13 +4,12 @@ body {
   background: #f6f7f9;
 }
 
-/* 左右結構 */
 .layout {
   display: flex;
   height: 100vh;
 }
 
-/* 左側欄 */
+/* sidebar */
 .sidebar {
   width: 360px;
   padding: 16px;
@@ -20,20 +19,26 @@ body {
   background: #fff;
 }
 
-/* 搜尋框 */
+/* sticky search */
 input {
   width: 100%;
   padding: 10px 12px;
-  margin: 10px 0 16px;
   box-sizing: border-box;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+
+  margin: 0 0 16px;
 }
 
-/* 卡片 */
+/* card */
 .store {
-  padding: 14px 14px 12px;
+  padding: 14px;
   border: 1px solid #eee;
   border-radius: 12px;
   margin-bottom: 12px;
@@ -47,34 +52,31 @@ input {
   border-color: #ddd;
 }
 
-/* 門市名稱 */
+/* active state */
+.store.active {
+  border: 1px solid #4a90e2;
+  background: #eef5ff;
+}
+
+/* name */
 .store-name {
   font-weight: 700;
   font-size: 15px;
-  line-height: 1.4;
-  margin-bottom: 6px;
   color: #222;
+  margin-bottom: 6px;
 }
 
-/* 地址區塊 */
+/* address */
 .store-meta {
   font-size: 13px;
   color: #666;
   line-height: 1.5;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
-/* 內容區 */
-.store-body {
-  font-size: 13px;
-  color: #444;
-  line-height: 1.6;
-  margin-top: 6px;
-}
-
-/* 更多資訊 */
+/* details */
 .store-more {
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 13px;
   color: #555;
 }
@@ -83,16 +85,24 @@ input {
   cursor: pointer;
   color: #888;
   font-size: 12px;
-  margin-bottom: 6px;
 }
 
-/* 小型資訊行 */
-.store-body div,
-.store-more div {
-  margin-top: 4px;
-}
-
-/* 地圖 */
+/* map */
 #map {
   flex: 1;
+}
+
+.store.active {
+  border: 1px solid #4a90e2;
+  background: #eef5ff;
+}
+
+.store-more a {
+  color: #555;
+  text-decoration: none;
+}
+
+.store-more a:hover {
+  color: #222;
+  text-decoration: underline;
 }
