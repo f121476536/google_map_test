@@ -24,8 +24,7 @@ function initMap(){
   renderStores(currentList);
   renderMarkers(currentList);
   updateFilterChips();
-
-  getUserLocation();
+//   getUserLocation();
 }
 
 /* ================= MARKERS ================= */
