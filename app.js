@@ -104,16 +104,6 @@ function renderStores(list){
       updateActiveState();
     });
 
-    div.addEventListener("mouseenter",()=>{
-      const marker=markerMap[store.name];
-      if(!marker) return;
-
-      marker.setAnimation(google.maps.Animation.BOUNCE);
-      setTimeout(()=>marker.setAnimation(null),700);
-
-      map.panTo(marker.getPosition());
-    });
-
     container.appendChild(div);
   });
 
