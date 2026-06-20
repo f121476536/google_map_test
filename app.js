@@ -13,8 +13,49 @@ let filters={
   pressureBed:false
 };
 
+/* ================= INIT ================= */
+
+function bootstrap(){
+  const mapEl=document.getElementById("map");
+  const searchEl=document.getElementById("searchBox");
+  const regionEl=document.getElementById("regionFilter");
+  const filterBtn=document.getElementById("filterToggle");
+
+  if(!mapEl || typeof stores==="undefined") return;
+
+  initMap();
+
+  if(searchEl){
+    searchEl.addEventListener("input",onSearch);
+  }
+
+  if(regionEl){
+    regionEl.addEventListener("change",onRegion);
+  }
+
+  const eb=document.getElementById("electricBedFilter");
+  const pb=document.getElementById("pressureBedFilter");
+
+  if(eb) eb.addEventListener("change",onFilters);
+  if(pb) pb.addEventListener("change",onFilters);
+
+  if(filterBtn){
+    filterBtn.addEventListener("click",()=>{
+      const panel=document.getElementById("filterPanel");
+      if(panel) panel.classList.toggle("show");
+    });
+  }
+}
+
+window.addEventListener("DOMContentLoaded",bootstrap);
+
+/* ================= MAP ================= */
+
 function initMap(){
-  map=new google.maps.Map(document.getElementById("map"),{
+  const mapEl=document.getElementById("map");
+  if(!mapEl) return;
+
+  map=new google.maps.Map(mapEl,{
     center:{lat:23.7,lng:121},
     zoom:7
   });
@@ -24,7 +65,6 @@ function initMap(){
   renderStores(currentList);
   renderMarkers(currentList);
   updateFilterChips();
-//   getUserLocation();
 }
 
 /* ================= MARKERS ================= */
@@ -57,11 +97,14 @@ function renderMarkers(list){
 function renderStores(list){
   const container=document.getElementById("storeList");
   const count=document.getElementById("resultCount");
-  const chips=document.getElementById("filterChips");
+
+  if(!container) return;
 
   container.innerHTML="";
-  if(count) count.textContent=`共 ${list.length} 間門市`;
-  if(chips) chips.innerHTML="";
+
+  if(count){
+    count.textContent=`共 ${list.length} 間門市`;
+  }
 
   if(list.length===0){
     container.innerHTML=`<div style="color:#999;font-size:13px;padding:10px;">沒有符合條件的門市</div>`;
@@ -97,8 +140,10 @@ function renderStores(list){
 
       activeStoreName=store.name;
 
-      map.setCenter({lat:store.lat,lng:store.lng});
-      map.setZoom(15);
+      if(map){
+        map.setCenter({lat:store.lat,lng:store.lng});
+        map.setZoom(15);
+      }
 
       updateActiveState();
     });
@@ -130,7 +175,6 @@ function applyFilters(){
 
   renderStores(currentList);
   renderMarkers(currentList);
-  syncInputs();
   updateFilterChips();
 }
 
@@ -149,16 +193,7 @@ function updateFilterChips(){
 
     const chip=document.createElement("div");
     chip.style.cssText="font-size:12px;background:#eef5ff;padding:4px 8px;border-radius:999px;cursor:pointer;";
-
-    let label="";
-
-    if(typeof val==="boolean"){
-      label=`${key}:${val}`;
-    }else{
-      label=`${key}:${val}`;
-    }
-
-    chip.textContent=label;
+    chip.textContent=`${key}:${val}`;
 
     chip.onclick=()=>{
       if(typeof val==="boolean"){
@@ -167,9 +202,12 @@ function updateFilterChips(){
         if(el) el.checked=false;
       }else{
         filters[key]="";
-        const el=document.getElementById(key+"Filter") || document.getElementById("regionFilter") || document.getElementById("searchBox");
-        if(el && el.tagName==="INPUT") el.value="";
-        if(el && el.tagName==="SELECT") el.value="";
+
+        const search=document.getElementById("searchBox");
+        const region=document.getElementById("regionFilter");
+
+        if(key==="keyword" && search) search.value="";
+        if(key==="region" && region) region.value="";
       }
 
       applyFilters();
@@ -181,57 +219,24 @@ function updateFilterChips(){
 
 /* ================= EVENTS ================= */
 
-document.addEventListener("input",e=>{
-  if(e.target.id==="searchBox"){
-    filters.keyword=e.target.value;
-    applyFilters();
-  }
+function onSearch(e){
+  filters.keyword=e.target.value;
+  applyFilters();
+}
 
+function onRegion(e){
+  filters.region=e.target.value;
+  applyFilters();
+}
+
+function onFilters(e){
   if(e.target.id==="electricBedFilter"){
     filters.electricBed=e.target.checked;
-    applyFilters();
   }
 
   if(e.target.id==="pressureBedFilter"){
     filters.pressureBed=e.target.checked;
-    applyFilters();
   }
-});
 
-document.getElementById("regionFilter").addEventListener("change",e=>{
-  filters.region=e.target.value;
   applyFilters();
-});
-
-document.getElementById("filterToggle").addEventListener("click",()=>{
-  document.getElementById("filterPanel").classList.toggle("show");
-});
-
-/* ================= GEO ================= */
-
-function getUserLocation(){
-  if(!navigator.geolocation) return;
-
-  navigator.geolocation.getCurrentPosition(pos=>{
-    const userPos={lat:pos.coords.latitude,lng:pos.coords.longitude};
-
-    map.setCenter(userPos);
-    map.setZoom(12);
-
-    userMarker=new google.maps.Marker({
-      position:userPos,
-      map,
-      title:"目前位置"
-    });
-  });
 }
-
-function syncInputs(){
-  const search=document.getElementById("searchBox");
-  if(search) search.value=filters.keyword;
-
-  const region=document.getElementById("regionFilter");
-  if(region) region.value=filters.region;
-}
-
-window.addEventListener("load",()=>initMap());
