@@ -234,4 +234,4 @@ function syncInputs(){
   if(region) region.value=filters.region;
 }
 
-window.initMap=initMap;
+window.addEventListener("load",()=>initMap());
