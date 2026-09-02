@@ -2,6 +2,7 @@ let map;
 let markers=[];
 let markerMap={};
 let userMarker;
+let activeInfoWindow=null;
 
 let currentList=[];
 let activeStoreName=null;
@@ -70,6 +71,11 @@ function initMap(){
 /* ================= MARKERS ================= */
 
 function renderMarkers(list){
+  if(activeInfoWindow){
+    activeInfoWindow.close();
+    activeInfoWindow=null;
+  }
+
   markers.forEach(m=>m.setMap(null));
   markers=[];
   markerMap={};
@@ -85,7 +91,17 @@ function renderMarkers(list){
       content:`<b>${store.name}</b><br>${store.address}<br>${store.phone||""}`
     });
 
-    marker.addListener("click",()=>info.open(map,marker));
+    marker.addListener("click",()=>{
+      if(activeInfoWindow) activeInfoWindow.close();
+      info.open(map,marker);
+      activeInfoWindow=info;
+
+      activeStoreName=store.name;
+      updateActiveState();
+
+      const el=document.querySelector(`.store[data-name="${CSS.escape(store.name)}"]`);
+      if(el) el.scrollIntoView({behavior:"smooth",block:"nearest"});
+    });
 
     markers.push(marker);
     markerMap[store.name]=marker;
@@ -116,13 +132,17 @@ function renderStores(list){
     div.className="store";
     div.dataset.name=store.name;
 
+    const phoneHtml=store.phone
+      ? `<a href="tel:${store.phone.replace(/[^0-9+]/g,"")}">${store.phone}</a>`
+      : "-";
+
     div.innerHTML=`
       <div class="store-name">${store.name}</div>
       <div class="store-meta">📍 ${store.address}</div>
 
       <details class="store-more">
         <summary>更多資訊</summary>
-        <div>📞 ${store.phone||"-"}</div>
+        <div>📞 ${phoneHtml}</div>
         <div>🕒 ${store.hours||"-"}</div>
         <div>ℹ️ ${store.note||"-"}</div>
 
