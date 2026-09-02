@@ -21,6 +21,29 @@ body{
   flex-shrink:0;
 }
 
+.top-bar-left{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  height:100%;
+}
+
+.top-bar-logo-link{
+  display:flex;
+  align-items:center;
+  transition:.15s;
+}
+
+.top-bar-logo-link:hover{
+  opacity:.85;
+}
+
+.top-bar-logo{
+  height:32px;
+  width:auto;
+  display:block;
+}
+
 .top-bar-tabs{
   display:flex;
   gap:4px;
@@ -44,8 +67,8 @@ body{
 }
 
 .top-bar-tab.active{
-  color:#4a90e2;
-  border-bottom-color:#4a90e2;
+  color:#ac0362;
+  border-bottom-color:#ac0362;
   font-weight:700;
 }
 
@@ -229,6 +252,14 @@ select{
   .top-bar{
     height:44px;
     padding:0 10px;
+  }
+
+  .top-bar-left{
+    gap:10px;
+  }
+
+  .top-bar-logo{
+    height:24px;
   }
 
   .top-bar-tab{
