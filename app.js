@@ -184,17 +184,22 @@ function renderStores(list){
       </details>
     `;
 
+    /* 點卡片等同點地圖標記：開資訊視窗並設為選中；「更多資訊」、電話、如何前往除外 */
     div.addEventListener("click",e=>{
       if(e.target.closest("summary, a")) return;
-
-      activeStoreName=store.name;
 
       if(map){
         map.setCenter({lat:store.lat,lng:store.lng});
         map.setZoom(15);
       }
 
-      updateActiveState();
+      const marker=markerMap[store.name];
+      if(marker){
+        google.maps.event.trigger(marker,"click");
+      }else{
+        activeStoreName=store.name;
+        updateActiveState();
+      }
     });
 
     container.appendChild(div);
