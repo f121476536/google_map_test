@@ -65,10 +65,10 @@ body{
   display:inline-flex;
   align-items:center;
   gap:8px;
-  font-size:15px;
+  font-size:17px;
   color:var(--rose);
   text-decoration:none;
-  padding:10px 14px 10px 18px;
+  padding:7px 12px 7px 16px;
   border:1px solid #ddd;
   border-radius:10px;
   transition:.15s;
@@ -77,15 +77,14 @@ body{
 }
 
 .top-bar-link-icon{
-  width:22px;
-  height:22px;
+  width:24px;
+  height:24px;
   color:var(--rose);
   flex-shrink:0;
   transition:.15s;
 }
 
 .top-bar-link:hover{
-  background:#f8f2f3;
   border-color:var(--rose);
 }
 
@@ -352,14 +351,14 @@ select{
 .iw-body{
   padding:12px 16px 14px;
   font-size:13px;
-  color:#333;
+  font-weight:400;        /* 蓋掉 Google 資訊視窗預設的 300 細字 */
+  color:#000;
   line-height:1.7;
   min-width:180px;
 }
 
 .iw-body a{
-  color:var(--brand);
-  font-weight:700;
+  color:#000;
   text-decoration:none;
 }
 
