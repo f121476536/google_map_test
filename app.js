@@ -1,7 +1,7 @@
 let map;
 let markers=[];
 let markerMap={};
-let userMarker;
+let activeInfoWindow=null;
 
 let currentList=[];
 let activeStoreName=null;
@@ -12,6 +12,25 @@ let filters={
   electricBed:false,
   pressureBed:false
 };
+
+/* 篩選標籤的顯示文字；勾選類條件只顯示名稱，不顯示 true/false */
+const FILTER_LABELS={
+  keyword:v=>`關鍵字：${v}`,
+  region:v=>`地區：${v}`,
+  electricBed:()=>"電動床陳列",
+  pressureBed:()=>"防褥瘡床墊陳列"
+};
+
+/* ================= HELPERS ================= */
+
+/* 選填欄位（電話、營業時間、陳列說明）是空的就不顯示 */
+function hasValue(v){
+  return typeof v==="string" && v.trim()!=="";
+}
+
+function telHref(phone){
+  return "tel:"+phone.replace(/[^0-9+]/g,"");
+}
 
 /* ================= INIT ================= */
 
@@ -74,6 +93,11 @@ function renderMarkers(list){
   markers=[];
   markerMap={};
 
+  if(activeInfoWindow){
+    activeInfoWindow.close();
+    activeInfoWindow=null;
+  }
+
   list.forEach(store=>{
     const marker=new google.maps.Marker({
       position:{lat:store.lat,lng:store.lng},
@@ -81,11 +105,33 @@ function renderMarkers(list){
       title:store.name
     });
 
+    /* 店名放在 headerContent，樣式由 style.css 的 InfoWindow 區塊覆蓋 */
+    const header=document.createElement("div");
+    header.textContent=store.name;
+
+    const body=document.createElement("div");
+    body.className="iw-body";
+    body.innerHTML=`<div>${store.address}</div>`+
+      (hasValue(store.phone)
+        ? `<div><a href="${telHref(store.phone)}">${store.phone}</a></div>`
+        : "");
+
     const info=new google.maps.InfoWindow({
-      content:`<b>${store.name}</b><br>${store.address}<br>${store.phone||""}`
+      headerContent:header,
+      content:body
     });
 
-    marker.addListener("click",()=>info.open(map,marker));
+    marker.addListener("click",()=>{
+      if(activeInfoWindow) activeInfoWindow.close();
+      info.open(map,marker);
+      activeInfoWindow=info;
+
+      activeStoreName=store.name;
+      updateActiveState();
+
+      const el=document.querySelector(`.store[data-name="${CSS.escape(store.name)}"]`);
+      if(el) el.scrollIntoView({behavior:"smooth",block:"nearest"});
+    });
 
     markers.push(marker);
     markerMap[store.name]=marker;
@@ -116,18 +162,21 @@ function renderStores(list){
     div.className="store";
     div.dataset.name=store.name;
 
+    const rows=[];
+    if(hasValue(store.phone)) rows.push(`<div>📞 <a href="${telHref(store.phone)}">${store.phone}</a></div>`);
+    if(hasValue(store.hours)) rows.push(`<div>🕒 ${store.hours}</div>`);
+    if(hasValue(store.note))  rows.push(`<div>ℹ️ ${store.note}</div>`);
+
     div.innerHTML=`
       <div class="store-name">${store.name}</div>
       <div class="store-meta">📍 ${store.address}</div>
 
       <details class="store-more">
         <summary>更多資訊</summary>
-        <div>📞 ${store.phone||"-"}</div>
-        <div>🕒 ${store.hours||"-"}</div>
-        <div>ℹ️ ${store.note||"-"}</div>
+        ${rows.join("")}
 
-        <div style="margin-top:6px;">
-          <a target="_blank" rel="noopener noreferrer"
+        <div class="store-nav-wrap">
+          <a class="store-nav" target="_blank" rel="noopener noreferrer"
           href="https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}">
           🚗 如何前往
           </a>
@@ -136,7 +185,7 @@ function renderStores(list){
     `;
 
     div.addEventListener("click",e=>{
-      if(e.target.tagName==="SUMMARY"||e.target.tagName==="A") return;
+      if(e.target.closest("summary, a")) return;
 
       activeStoreName=store.name;
 
@@ -192,8 +241,8 @@ function updateFilterChips(){
     if(val===false || val==="" || val===null) return;
 
     const chip=document.createElement("div");
-    chip.style.cssText="font-size:12px;background:#eef5ff;padding:4px 8px;border-radius:999px;cursor:pointer;";
-    chip.textContent=`${key}:${val}`;
+    chip.className="chip";
+    chip.textContent=`${FILTER_LABELS[key](val)} ✕`;
 
     chip.onclick=()=>{
       if(typeof val==="boolean"){

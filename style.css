@@ -1,3 +1,13 @@
+/* ===== brand colors ===== */
+
+:root{
+  --brand:#ac0362;        /* 品牌紫紅：標題、店名、選中框、資訊視窗標題列 */
+  --brand-soft:#fcf0f5;   /* 淡粉：選中卡片背景、篩選標籤背景 */
+  --brand-muted:#cf7fa3;  /* 淺紫紅：「更多資訊」等次要文字 */
+  --brand-line:#f0dfe6;   /* 淡粉邊框：卡片、標籤 */
+  --rose:#b98a91;         /* 灰玫瑰：「條件篩選」、「如何前往」按鈕 */
+}
+
 body{
   margin:0;
   font-family:Arial,"Noto Sans TC",sans-serif;
@@ -13,8 +23,9 @@ body{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  height:52px;
-  padding:0 16px;
+  gap:16px;
+  height:88px;
+  padding:0 24px;
   background:#fff;
   border-bottom:1px solid #eee;
   box-sizing:border-box;
@@ -24,8 +35,8 @@ body{
 .top-bar-left{
   display:flex;
   align-items:center;
-  gap:16px;
-  height:100%;
+  gap:20px;
+  min-width:0;
 }
 
 .top-bar-logo-link{
@@ -39,53 +50,48 @@ body{
 }
 
 .top-bar-logo{
-  height:32px;
+  height:56px;
   width:auto;
   display:block;
 }
 
-.top-bar-tabs{
-  display:flex;
-  gap:4px;
-  height:100%;
-}
-
-.top-bar-tab{
-  display:flex;
-  align-items:center;
-  padding:0 16px;
-  font-size:14px;
-  color:#666;
-  text-decoration:none;
-  border-bottom:2px solid transparent;
-  transition:.15s;
-}
-
-.top-bar-tab:hover{
-  color:#333;
-  background:#fafafa;
-}
-
-.top-bar-tab.active{
-  color:#ac0362;
-  border-bottom-color:#ac0362;
-  font-weight:700;
+.top-bar-slogan{
+  height:34px;
+  width:auto;
+  display:block;
 }
 
 .top-bar-link{
-  font-size:13px;
-  color:#666;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:15px;
+  color:#555;
   text-decoration:none;
-  padding:8px 12px;
+  padding:10px 14px 10px 18px;
   border:1px solid #ddd;
-  border-radius:8px;
+  border-radius:10px;
   transition:.15s;
   white-space:nowrap;
+  flex-shrink:0;
+}
+
+.top-bar-link-icon{
+  width:22px;
+  height:22px;
+  color:#9a9a9a;
+  flex-shrink:0;
+  transition:.15s;
 }
 
 .top-bar-link:hover{
-  background:#f6f7f9;
-  color:#333;
+  background:var(--brand-soft);
+  border-color:var(--brand);
+  color:var(--brand);
+}
+
+.top-bar-link:hover .top-bar-link-icon{
+  color:var(--brand);
 }
 
 /* ===== layout ===== */
@@ -105,6 +111,21 @@ body{
   box-sizing:border-box;
   background:#fff;
   border-right:1px solid #eee;
+}
+
+.sidebar-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:6px 0 16px;
+  font-size:20px;
+  color:var(--brand);
+}
+
+.sidebar-mascot{
+  height:32px;
+  width:auto;
+  flex-shrink:0;
 }
 
 /* ===== map ===== */
@@ -131,10 +152,18 @@ input{
   padding:10px;
   margin-top:10px;
   margin-bottom:10px;
-  border:1px solid #ddd;
+  border:none;
   border-radius:8px;
-  background:#fff;
+  background:var(--rose);
+  color:#fff;
+  font-size:14px;
+  font-weight:700;
   cursor:pointer;
+  transition:.15s;
+}
+
+.filter-btn:hover{
+  filter:brightness(.95);
 }
 
 /* ===== filter panel ===== */
@@ -168,6 +197,21 @@ select{
   margin-bottom:10px;
 }
 
+.chip{
+  font-size:12px;
+  background:var(--brand-soft);
+  color:var(--brand);
+  border:1px solid var(--brand-line);
+  padding:4px 10px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:.15s;
+}
+
+.chip:hover{
+  background:#f8dfe9;
+}
+
 #resultCount{
   font-size:13px;
   color:#666;
@@ -178,7 +222,7 @@ select{
 
 .store{
   padding:14px;
-  border:1px solid #eee;
+  border:1px solid var(--brand-line);
   border-radius:12px;
   margin-bottom:12px;
   cursor:pointer;
@@ -187,23 +231,24 @@ select{
 }
 
 .store:hover{
-  background:#fafafa;
+  background:#fdf8fa;
 }
 
 .store.active{
-  border-color:#4a90e2;
-  background:#eef5ff;
+  border-color:var(--brand);
+  background:var(--brand-soft);
 }
 
 .store-name{
   font-size:15px;
   font-weight:700;
+  color:var(--brand);
   margin-bottom:6px;
 }
 
 .store-meta{
   font-size:13px;
-  color:#666;
+  color:#555;
   line-height:1.4;
 }
 
@@ -218,7 +263,12 @@ select{
 .store-more summary{
   cursor:pointer;
   font-size:12px;
-  color:#888;
+  color:var(--brand-muted);
+}
+
+.store-more > div{
+  margin-top:5px;
+  line-height:1.5;
 }
 
 .store-more a{
@@ -227,6 +277,98 @@ select{
 }
 
 .store-more a:hover{
+  text-decoration:underline;
+}
+
+.store-nav-wrap{
+  margin-top:10px;
+}
+
+.store-more a.store-nav{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 16px;
+  border-radius:999px;
+  background:var(--rose);
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  text-decoration:none;
+  transition:.15s;
+}
+
+.store-more a.store-nav:hover{
+  filter:brightness(.95);
+  text-decoration:none;
+}
+
+/* ===== Google Maps InfoWindow =====
+   以下覆蓋 Google 內部 class（.gm-style-iw-*、.gm-ui-hover-effect），
+   不是公開 API，Maps API 版本更新後若資訊視窗退回預設白色外觀，請調整這一段。 */
+
+.gm-style .gm-style-iw-c{
+  padding:0 !important;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 4px 16px rgba(0,0,0,.22);
+}
+
+/* 標題列 */
+.gm-style .gm-style-iw-chr{
+  background:var(--brand);
+  align-items:center;
+  padding:0 6px 0 14px;
+  min-height:40px;
+}
+
+.gm-style .gm-style-iw-ch{
+  padding:0 !important;
+  color:#fff;
+  font-size:15px;
+  font-weight:700;
+  line-height:1.3;
+}
+
+/* 關閉鈕：白色圓形，裡面的 ✕ 用品牌色 */
+.gm-style .gm-style-iw-chr .gm-ui-hover-effect{
+  width:26px !important;
+  height:26px !important;
+  margin:0 0 0 12px !important;
+  background:#fff !important;
+  border-radius:50%;
+  opacity:1 !important;
+  flex-shrink:0;
+}
+
+.gm-style .gm-style-iw-chr .gm-ui-hover-effect > span{
+  width:14px !important;
+  height:14px !important;
+  margin:6px !important;
+  background-color:var(--brand) !important;
+}
+
+/* 內容區 */
+.gm-style .gm-style-iw-d{
+  overflow:auto !important;
+  padding:0 !important;
+}
+
+.iw-body{
+  padding:12px 16px 14px;
+  font-size:13px;
+  color:#333;
+  line-height:1.7;
+  min-width:180px;
+}
+
+.iw-body a{
+  color:var(--brand);
+  font-weight:700;
+  text-decoration:none;
+}
+
+.iw-body a:hover{
   text-decoration:underline;
 }
 
@@ -250,8 +392,9 @@ select{
   }
 
   .top-bar{
-    height:44px;
-    padding:0 10px;
+    height:56px;
+    padding:0 12px;
+    gap:10px;
   }
 
   .top-bar-left{
@@ -259,17 +402,32 @@ select{
   }
 
   .top-bar-logo{
-    height:24px;
+    height:32px;
   }
 
-  .top-bar-tab{
-    padding:0 10px;
-    font-size:13px;
+  .top-bar-slogan{
+    display:none;
   }
 
   .top-bar-link{
     font-size:12px;
-    padding:6px 10px;
+    padding:6px 8px 6px 10px;
+    gap:6px;
+    border-radius:8px;
+  }
+
+  .top-bar-link-icon{
+    width:18px;
+    height:18px;
+  }
+
+  .sidebar-title{
+    font-size:18px;
+    margin:2px 0 12px;
+  }
+
+  .sidebar-mascot{
+    height:28px;
   }
 
   .store{
@@ -327,6 +485,6 @@ select{
   width:16px;
   height:16px;
   margin:0;
-  accent-color:#4a90e2;
+  accent-color:var(--brand);
   flex-shrink:0;
 }

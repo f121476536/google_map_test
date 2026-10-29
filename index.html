@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>門市據點查詢</title>
+    <title>IMAGER-37 服務據點查詢</title>
 
     <link rel="stylesheet" href="style.css" />
     <script src="stores.js"></script>
@@ -16,30 +16,37 @@
 
     <div class="top-bar">
         <div class="top-bar-left">
-            <a href="https://www.imager-37.com.tw/" class="top-bar-logo-link" aria-label="返回官網">
-                <img src="logo-imager37.png" alt="IMAGER-37" class="top-bar-logo" />
+            <a href="https://www.imager-37.com.tw/" class="top-bar-logo-link" aria-label="返回 IMAGER-37 官網">
+                <img src="logo-imager37.png" alt="IMAGER-37 易眠床・易眠枕" class="top-bar-logo" />
             </a>
-            <nav class="top-bar-tabs">
-                <a href="index.html" class="top-bar-tab active">版本一</a>
-                <a href="version2.html" class="top-bar-tab">版本二</a>
-            </nav>
+            <img src="slogan.png" alt="睡飽了，自然就會想微笑:)" class="top-bar-slogan" />
         </div>
-        <a href="https://www.imager-37.com.tw/" class="top-bar-link">返回官網</a>
+        <a href="https://www.imager-37.com.tw/" class="top-bar-link">
+            返回IMAGER-37官網
+            <svg class="top-bar-link-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="12" fill="currentColor" />
+                <path fill="#fff" transform="translate(5 5.5) scale(0.6)"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z" />
+            </svg>
+        </a>
     </div>
 
     <div class="layout">
 
         <div class="sidebar">
 
-            <h2>門市據點查詢</h2>
+            <h2 class="sidebar-title">
+                <img src="mascot.png" alt="" class="sidebar-mascot" />
+                服務據點查詢
+            </h2>
 
-            <input 
-            id="searchBox" 
+            <input
+            id="searchBox"
             placeholder="搜尋門市 / 地址"
             />
 
-            <button id="filterToggle" class="filter-btn">
-            篩選條件
+            <button id="filterToggle" class="filter-btn" type="button">
+            條件篩選
             </button>
 
 
@@ -59,8 +66,8 @@
 
 
             <label class="filter-check">
-                <input 
-                type="checkbox" 
+                <input
+                type="checkbox"
                 id="electricBedFilter"
                 >
                 電動床陳列櫃點
@@ -68,8 +75,8 @@
 
 
             <label class="filter-check">
-                <input 
-                type="checkbox" 
+                <input
+                type="checkbox"
                 id="pressureBedFilter"
                 >
                 防褥瘡床墊陳列櫃點
@@ -77,8 +84,8 @@
 
             </div>
 
-            <div id="resultCount" style="font-size:13px;color:#666;margin-bottom:10px;"></div>
-            <div id="filterChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
+            <div id="resultCount"></div>
+            <div id="filterChips"></div>
             <div id="storeList"></div>
 
         </div>
