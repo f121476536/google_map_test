@@ -1,0 +1,5 @@
+# OpenSpec 初始化產生的檔案
+openspec/
+
+# Claude Code 設定與 skills
+.claude/
