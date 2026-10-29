@@ -123,7 +123,8 @@ function renderMarkers(list){
 
     marker.addListener("click",()=>{
       if(activeInfoWindow) activeInfoWindow.close();
-      info.open(map,marker);
+      /* shouldFocus:false：不要把焦點移到電話連結上，否則會出現焦點外框 */
+      info.open({map,anchor:marker,shouldFocus:false});
       activeInfoWindow=info;
 
       activeStoreName=store.name;
