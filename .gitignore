@@ -3,3 +3,6 @@ openspec/
 
 # Claude Code 設定與 skills
 .claude/
+
+# 客戶原始素材與對話紀錄
+temp/
